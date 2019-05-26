@@ -17,7 +17,7 @@
                         <span class="peity_visitors peity_data">5,3,9,6,5,9,7</span>
                     </div>
                     <span class="uk-text-muted uk-text-small">Employees</span>
-                    <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript>{{ $employee }}</noscript></span></h2>
+                    <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript>{{ isset($employee)?$employee:0 }}</noscript></span></h2>
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@
                         <span class="peity_sale peity_data">5,3,9,6,5,9,7,3,5,2</span>
                     </div>
                     <span class="uk-text-muted uk-text-small">Department</span>
-                    <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript>{{ $department }}</noscript></span>
+                    <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript>{{ isset($department)?$department:0 }}</noscript></span>
                     </h2>
                 </div>
             </div>

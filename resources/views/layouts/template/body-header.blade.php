@@ -13,8 +13,12 @@
                         <a href="javascript:;" class="user_action_image"><img class="md-user-image" src="{{ asset('assets/img/avatars/user.png') }}" alt=""/></a>
                         <div class="uk-dropdown uk-dropdown-small">
                             <ul class="uk-nav js-uk-prevent">
-                                <li><a href="{{ asset('login_v2.html') }}">Log Out</a></li>
+                                <li><a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">Log Out</a></li>
                             </ul>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
                         </div>
                     </li>
                 </ul>

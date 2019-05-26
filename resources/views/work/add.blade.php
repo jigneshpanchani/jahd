@@ -1,20 +1,18 @@
 @extends('layouts.template')
 
-@section('title', 'Edit Work')
+@section('title', 'Add Work')
 
 @section('content')
-    <h3 class="heading_b uk-margin-bottom">Update Employee Work</h3>
-
+    <h3 class="heading_b uk-margin-bottom">Add Employee Work</h3>
     <div class="md-card">
         <div class="md-card-content large-padding">
-            <form name="work-edit" id="form_validation" class="uk-form-stacked" method="post" action="{{ route('work.update', $result['id']) }}">
-                {{ method_field('PUT') }}
+            <form name="work-add" id="form_validation" class="uk-form-stacked" method="post" action="{{ route('work.store') }}">
                 {{ csrf_field() }}
                 <div class="uk-grid" data-uk-grid-margin>
                     <div class="uk-width-medium-1-4">
                         <div class="parsley-row">
                             <label for="val_date">Working Date</label>
-                            <input type="text" name="date" id="val_date" class="md-input" value="{{ (!empty($result['date'])) ? $result['date'] : old('date') }}"
+                            <input type="text" name="date" id="val_date" class="md-input" value="{{ date('Y-m-d') }}"
                                    data-parsley-americandate
                                    data-parsley-americandate-message="This value should be a valid date (YYYY-MM-DD)"
                                    data-uk-datepicker="{format:'YYYY-MM-DD'}"/>
@@ -23,28 +21,25 @@
                     <div class="uk-width-medium-1-2">&nbsp;</div>
                     <div class="uk-width-medium-1-4">
                         <div class="parsley-row">
-                            <a title="Zone" class="md-btn disabled" href="javascript:void(0)">{{ (isset($employee->zone) && !empty($employee->zone->name)) ? $employee->zone->name : '' }}</a>
+                            <a title="Zone" class="md-btn disabled" href="javascript:void(0)">{{ (isset($zone) && !empty($zone->name)) ? $zone->name : '' }}</a>
                             {{--<input type="hidden" name="zone_id" value="{{ (isset($zone) && !empty($zone->id)) ? $zone->id : '' }}" class="" />--}}
                         </div>
                     </div>
                 </div>
                 <div class="uk-grid" data-uk-grid-margin>
                     <div class="uk-width-medium-1-2">
-                        <label for="employee_id" class="uk-form-label">Employee</label>
                         <select id="employee_id" name="employee_id" data-md-selectize data-md-selectize-bottom data-uk-tooltip="{pos:'top'}" title="Select Employee" required>
                             <option value="">Select Employee</option>
                             @foreach($employees as $emp)
-                            <option value="{{ $emp->id }}" {{ ($emp->id==$result['employee_id'])?'selected':'' }}>{{ $emp->name }}</option>
+                            <option value="{{ $emp->id }}" {{ ($emp->id==old('employee_id'))?'selected':'' }}>{{ $emp->name }}</option>
                             @endforeach
                         </select>
-                        {{--<span class="uk-form-help-block">With Employee</span>--}}
                     </div>
                     <div class="uk-width-medium-1-2">
-                        <label for="department_id" class="uk-form-label">Department</label>
                         <select id="department_id" name="department_id" data-md-selectize data-md-selectize-bottom data-uk-tooltip="{pos:'top'}" title="Select Department" required>
                             <option value="">Select Department</option>
                             @foreach($departments as $dept)
-                            <option value="{{ $dept->id }}" {{ ($dept->id==$result['department_id'])?'selected':'' }}>{{ $dept->name }}</option>
+                            <option value="{{ $dept->id }}" {{ ($dept->id==old('department_id'))?'selected':'' }}>{{ $dept->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -53,33 +48,33 @@
                     <div class="uk-width-medium-1-4">
                         <div class="parsley-row">
                             <label for="withdrawal">Withdrawal</label>
-                            <input type="number" name="withdrawal" min="0" data-parsley-min="0" value="{{ (!empty($result['withdrawal'])) ? $result['withdrawal'] : ((old('withdrawal')) ? old('withdrawal') : 0) }}" class="md-input" />
+                            <input type="number" name="withdrawal" min="0" data-parsley-min="0" value="{{ (old('withdrawal')) ? old('withdrawal') : 0 }}" class="md-input"/>
                         </div>
                     </div>
                     <div class="uk-width-medium-1-4">
                         <div class="parsley-row">
                             <label for="salary">Salary</label>
-                            <input type="number" name="salary" min="0" data-parsley-min="0" value="{{ (!empty($result['salary'])) ? $result['salary'] : ((old('salary')) ? old('salary') : 0) }}" class="md-input"/>
+                            <input type="number" name="salary" min="0" data-parsley-min="0" value="{{ (old('salary')) ? old('salary') : 0 }}" class="md-input"/>
                         </div>
                     </div>
                     <div class="uk-width-medium-1-6">
                         <div class="parsley-row">
                             <label for="price">Price</label>
-                            <input type="text" name="price" value="{{ (!empty($result['price'])) ? $result['price'] : old('price') }}" disabled class="md-input price"/>
-                            <input type="hidden" name="price" value="{{ (!empty($result['price'])) ? $result['price'] : old('price') }}" class="price" />
+                            <input type="text" name="price" value="{{old('price')}}" class="md-input price" disabled />
+                            <input type="hidden" name="price" value="{{old('price')}}" class="price" />
                         </div>
                     </div>
                     <div class="uk-width-medium-1-6">
                         <div class="parsley-row">
                             <label for="quantity">Quantity<span class="req"> * </span></label>
-                            <input type="number" name="quantity" min="1" data-parsley-min="1" value="{{ (!empty($result['quantity'])) ? $result['quantity'] : old('quantity') }}" required class="md-input quantity"/>
+                            <input type="number" name="quantity" min="1" data-parsley-min="1" value="{{old('quantity')}}" required class="md-input quantity"/>
                         </div>
                     </div>
                     <div class="uk-width-medium-1-6">
                         <div class="parsley-row">
                             <label for="total">Total</label>
-                            <input type="text" name="total" value="{{ (!empty($result['total'])) ? $result['total'] : old('price') }}" class="md-input total" disabled/>
-                            <input type="hidden" name="total" value="{{ (!empty($result['total'])) ? $result['total'] : old('price') }}" class="total"/>
+                            <input type="text" name="total" value="{{old('total')}}" class="md-input total" disabled/>
+                            <input type="hidden" name="total" value="{{old('total')}}" class="total"/>
                         </div>
                     </div>
                 </div>
@@ -87,14 +82,14 @@
                     <div class="uk-width-1-1">
                         <div class="parsley-row">
                             <label for="note">Note</label>
-                            <textarea class="md-input" name="note" cols="10" rows="4">{{ (!empty($result['note'])) ? $result['note'] : old('note') }}</textarea>
+                            <textarea class="md-input" name="note" cols="10" rows="4">{{old('note')}}</textarea>
                         </div>
                     </div>
                 </div>
                 <div class="uk-grid">
                     <div class="uk-width-1-1">
-                        <button type="submit" class="md-btn md-btn-primary">Update</button>
-                        <a href="{{ route('work.edit', $result['id']) }}" class="md-btn md-btn-danger uk-align-right">Cancel</a>
+                        <button type="submit" class="md-btn md-btn-primary">Save</button>
+                        <a href="{{ route('work.create') }}" class="md-btn md-btn-danger uk-align-right">Cancel</a>
                     </div>
                 </div>
             </form>

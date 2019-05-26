@@ -10,9 +10,10 @@
                 <thead>
                 <tr>
                     <th width="30%">Name</th>
+                    <th width="20%">Zone</th>
                     <th width="20%">Contact No</th>
-                    <th width="35%">Address</th>
-                    <th width="15%">Action</th>
+                    <th width="20%">Address</th>
+                    <th width="10%">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -20,6 +21,7 @@
                 @foreach($employees as $row)
                     <tr>
                         <td>{{ $row['name'] }}</td>
+                        <td>{{ $row->zone['name'] }}</td>
                         <td>{{ $row['contact_no'] }}</td>
                         <td>{{ $row['address'] }}</td>
                         <td>
@@ -37,6 +39,21 @@
     </div>
 @endsection
 @push('scripts')
+    <!-- datatables -->
+    <script src="{{ asset('bower_components/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+    <!-- datatables buttons-->
+    <script src="{{ asset('bower_components/datatables-buttons/js/dataTables.buttons.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/datatables/buttons.uikit.js') }}"></script>
+    <script src="{{ asset('bower_components/jszip/dist/jszip.min.js') }}"></script>
+    <script src="{{ asset('bower_components/datatables-buttons/js/buttons.html5.js') }}"></script>
+    <script src="{{ asset('bower_components/datatables-buttons/js/buttons.print.js') }}"></script>
+
+    <!-- datatables custom integration -->
+    <script src="{{ asset('assets/js/custom/datatables/datatables.uikit.min.js') }}"></script>
+
+    <!--  datatables functions -->
+    <script src="{{ asset('assets/js/pages/plugins_datatables.min.js') }}"></script>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('body').on('click', '.deleteRecord', function () {
@@ -62,11 +79,13 @@
                                 "_token": "{{ csrf_token() }}",
                             },
                             success: function (data){
-                                if(data.status == 'success'){
-                                    Swal.fire( 'Deleted!',  data.msg, 'success' )
-                                }else{
-                                    Swal.fire( 'Not Deleted!', data.msg, 'error' )
-                                }
+                                Swal.fire({
+                                    title: data.title,
+                                    text: data.msg,
+                                    type: data.status
+                                }).then((result) => {
+                                    window.location.reload();
+                                });
                             }
                         });
                     }

@@ -12,6 +12,16 @@
                 {{ csrf_field() }}
                 <div class="uk-grid" data-uk-grid-margin>
                     <div class="uk-width-medium-1-2">
+                        <select id="zone_id" name="zone_id" data-md-selectize data-md-selectize-bottom data-uk-tooltip="{pos:'top'}" title="Select Zone" required>
+                            <option value="">Select Zone</option>
+                            @foreach($zones as $zone)
+                                <option value="{{ $zone->id }}" {{ ($zone->id==old('zone_id'))?'selected':'' }}>{{ $zone->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="uk-grid" data-uk-grid-margin>
+                    <div class="uk-width-medium-1-2">
                         <div class="parsley-row">
                             <label for="name">Full Name<span class="req"> * </span></label>
                             <input type="text" name="name" value="{{old('name')}}" class="md-input" required/>

@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title><strong>&nbsp;જય આપાહરદાસ ડાયમંડ</strong></title>
+    <title>જય આપાહરદાસ ડાયમંડ</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class 20190405045926CreateEmployeesTable extends Migration
+class 20190525041301CreateZonesTable extends Migration
 {
     /**
      * Run the migrations.

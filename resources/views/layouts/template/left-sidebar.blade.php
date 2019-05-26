@@ -55,7 +55,7 @@
                     </li>
                 </ul>
             </li>
-            <li title="Department" class="{{ (Request::is('work') || Request::is('work/*')) ? 'current_section' : '' }}">
+            <li title="Work" class="{{ (Request::is('work') || Request::is('work/*')) ? 'current_section' : '' }}">
                 <a href="{{ route('work.index') }}">
                     <span class="menu_icon"><i class="material-icons">&#xE87B;</i></span>
                     <span class="menu_title">Work</span>
@@ -69,10 +69,16 @@
                     </li>
                 </ul>
             </li>
-            <li title="Report" class="{{ ($currentRoute == 'report') ? 'current_section' : '' }}">
+            <li title="Report" class="{{ (Request::is('report') || Request::is('report/*')) ? 'current_section' : '' }}">
                 <a href="{{ route('report') }}">
                     <span class="menu_icon"><i class="material-icons">&#xE241;</i></span>
                     <span class="menu_title">Report</span>
+                </a>
+            </li>
+            <li title="Settings" class="{{ (Request::is('zone') || Request::is('zone/*')) ? 'current_section' : '' }}">
+                <a href="{{ route('zone.index') }}">
+                    <span class="menu_icon"><i class="material-icons">&#xE8B8;</i></span>
+                    <span class="menu_title">Settings</span>
                 </a>
             </li>
             <li title="Sticky Notes">

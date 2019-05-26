@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Zone;
+use App\Models\zones;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -16,29 +18,31 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $employees = $this->model->get();
-        return view('employee.index', compact('employees'));
+        $data['employees'] = $this->model->with('zone')->get();
+        return view('employee.index', $data);
     }
 
-    public function create()
+    public function create(Zone $zone)
     {
-        return view('employee.create');
+        $data['zones'] = $zone->get();
+        return view('employee.create', $data);
     }
 
     public function store(Request $request)
     {
         try{
             $validator = \Validator::make($request->all(),[
+                'zone_id' => 'required',
                 'name' => 'required|unique:employees,name',
-                'address' => 'required',
                 /*'aadhar_card_no' => 'numeric|digits:12|unique:employees,aadhar_card_no'.$id,
                 'contact_no' => 'numeric|digits:10',*/
+                'address' => 'required',
             ]);
             if($validator->fails()){
                 return redirect()->route('employee.create')->withErrors($validator)->withInput();
             }
 
-            $inputArr = $request->only('name', 'aadhar_card_no', 'contact_no', 'dob', 'address', 'note');
+            $inputArr = $request->only('zone_id', 'name', 'aadhar_card_no', 'contact_no', 'dob', 'address', 'note');
             /*if(!empty($request->dob)){
                 $inputArr['dob'] = Carbon::createFromFormat('d-m-Y',$request->dob)->format('Y-m-d');
             }*/
@@ -55,8 +59,9 @@ class EmployeeController extends Controller
         //
     }
 
-    public function edit($id)
+    public function edit($id, Zone $zone)
     {
+        $data['zones'] = $zone->get();
         $result = $this->model->find($id);
         if($result){
             $data['result'] = $result;
@@ -70,6 +75,7 @@ class EmployeeController extends Controller
     {
         try{
             $validator = \Validator::make($request->all(),[
+                'zone_id' => 'required',
                 'name' => 'required|unique:employees,name,'.$id,
                 'address' => 'required',
                 /*'aadhar_card_no' => 'numeric|digits:12|unique:employees,aadhar_card_no'.$id,
@@ -78,7 +84,7 @@ class EmployeeController extends Controller
             if($validator->fails()){
                 return redirect()->route('employee.edit', $id)->withErrors($validator)->withInput();
             }
-            $updateArr = $request->only('name', 'aadhar_card_no', 'contact_no', 'dob', 'address', 'note');
+            $updateArr = $request->only('zone_id', 'name', 'aadhar_card_no', 'contact_no', 'dob', 'address', 'note');
             /*if(!empty($request->dob)){
                 $updateArr['dob'] = Carbon::createFromFormat('d-m-Y',$request->dob)->format('Y-m-d');
             }*/
@@ -102,9 +108,9 @@ class EmployeeController extends Controller
             $employee = $this->model->findOrFail($id);
             $res = $employee->delete($id);
             if($res){
-                return response()->json(['status' => 'success', 'msg' => 'Employee detail delete successfully.']);
+                return response()->json(['title' => 'Deleted!', 'status' => 'success', 'msg' => 'Employee detail delete successfully.']);
             }else{
-                return response()->json(['status' => 'error', 'msg' => 'Oops...Something want wrong. Please try again.']);
+                return response()->json(['title' => 'Not Deleted!', 'status' => 'error', 'msg' => 'Oops...Something want wrong. Please try again.']);
             }
         }catch (\Exception $e){
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);

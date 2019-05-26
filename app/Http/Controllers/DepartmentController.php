@@ -91,9 +91,9 @@ class DepartmentController extends Controller
             $department = $this->model->findOrFail($id);
             $res = $department->delete($id);
             if($res){
-                return response()->json(['status' => 'success', 'msg' => 'Department detail delete successfully.']);
+                return response()->json(['title' => 'Deleted!', 'status' => 'success', 'msg' => 'Department detail delete successfully.']);
             }else{
-                return response()->json(['status' => 'error', 'msg' => 'Oops...Something want wrong. Please try again.']);
+                return response()->json(['title' => 'Not Deleted!', 'status' => 'error', 'msg' => 'Oops...Something want wrong. Please try again.']);
             }
         }catch (\Exception $e){
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);

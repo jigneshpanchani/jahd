@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Work;
 use App\Models\Employee;
 use App\Models\Department;
+use App\Models\Zone;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -18,15 +19,27 @@ class WorkController extends Controller
     
     public function index()
     {
-        $works = $this->model->with('employee', 'department')->get();
-        return view('work.index', compact('works'));
+        $data['works'] = $this->model->with('employee', 'department')->get();
+        return view('work.index', $data);
     }
 
-    public function create(Employee $employee, Department $department)
+    public function create(Zone $zone)
     {
-        $data['employees'] = $employee->get();
-        $data['departments'] = $department->get();
+        $data['zones'] = $zone->get();
         return view('work.create', $data);
+    }
+
+    public function add(Employee $employee, Department $department, Zone $zone, Request $request)
+    {
+        if($request->input('zone')){
+            $zoneId = $request->input('zone');
+            $data['employees'] = $employee->where('zone_id', $zoneId)->get();
+            $data['zone'] = $zone->find($zoneId);
+            $data['departments'] = $department->get();
+            return view('work.add', $data);
+        }else{
+            return redirect()->route('work.create');
+        }
     }
 
     public function store(Request $request)
@@ -59,15 +72,15 @@ class WorkController extends Controller
         }
     }
     
-    public function show($id)
-    {
+    public function show($id){
         //
     }
     
-    public function edit($id, Employee $employee, Department $department)
+    public function edit($id, Employee $employee, Department $department, Zone $zone)
     {
         $result = $this->model->find($id);
         if($result){
+            $data['employee'] = $employee->with('zone')->find($result->employee_id);
             $data['employees'] = $employee->get();
             $data['departments'] = $department->get();
             $data['result'] = $result;
@@ -95,7 +108,6 @@ class WorkController extends Controller
             }
             $updateArr = $request->only('date', 'employee_id', 'department_id', 'price', 'quantity', 'withdrawal', 'salary', 'note');
             $updateArr['total'] = ($request->price * $request->quantity);
-            //echo "<pre>";print_r($updateArr);die;
             $work = $this->model->findOrFail($id);
             $res = $work->update($updateArr);
 
@@ -116,9 +128,9 @@ class WorkController extends Controller
             $work = $this->model->findOrFail($id);
             $res = $work->delete($id);
             if($res){
-                return response()->json(['status' => 'success', 'msg' => 'Work detail delete successfully.']);
+                return response()->json(['title' => 'Deleted!', 'status' => 'success', 'msg' => 'Work detail delete successfully.']);
             }else{
-                return response()->json(['status' => 'error', 'msg' => 'Oops...Something want wrong. Please try again.']);
+                return response()->json(['title' => 'Not Deleted!', 'status' => 'error', 'msg' => 'Oops...Something want wrong. Please try again.']);
             }
         }catch (\Exception $e){
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
