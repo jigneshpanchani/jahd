@@ -12,13 +12,12 @@ class Report extends Model
         $type = $data['radio_type'];
         $start = $data['start_date'];
         $end = $data['end_date'];
-//dd($data);
 
         $whereArr = array();
         if($type == 'Z')
         {
             if((!empty($data['zone_id'])) && ($data['zone_id'] != 'ALL')){
-                $whereArr[] = ['e.zone_id', '=', $data['zone_id']];
+                $whereArr[] = ['d.zone_id', '=', $data['zone_id']];
             }
             $groupByArr = ['e.id'];
         }
@@ -26,8 +25,10 @@ class Report extends Model
         {
             if((!empty($data['employee_id'])) && ($data['employee_id'] != 'ALL')){
                 $whereArr[] = ['e.id', '=', $data['employee_id']];
+                $groupByArr = ['w.id'];
+            } else if ($data['employee_id'] == 'ALL'){
+                $groupByArr = ['e.id'];
             }
-            $groupByArr = ['w.id'];
         }else{
             $groupByArr = ['w.id'];
         }
@@ -47,7 +48,7 @@ class Report extends Model
         $res = DB::table('works AS w')
             ->join('employees AS e', 'e.id', '=', 'w.employee_id')
             ->join('departments AS d', 'd.id', '=', 'w.department_id')
-            ->join('zones AS z', 'z.id', '=', 'e.zone_id')
+            ->join('zones AS z', 'z.id', '=', 'd.zone_id')
             ->where($whereArr)
             ->select(
                 'e.id',
@@ -55,8 +56,8 @@ class Report extends Model
                 'd.name AS department_name',
                 'z.name AS zone_name',
                 'w.date',
-                'w.quantity',
                 'w.price',
+                DB::raw('SUM(w.quantity) as quantity'),
                 DB::raw('SUM(w.withdrawal) as withdrawal'),
                 DB::raw('SUM(w.salary) as salary'),
                 DB::raw('SUM(w.total) as total')

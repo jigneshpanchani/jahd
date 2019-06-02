@@ -27,34 +27,24 @@
                     <span class="menu_title">Dashboard</span>
                 </a>
             </li>
+            <li title="Report" class="{{ (Request::is('report') || Request::is('report/*')) ? 'current_section' : '' }}">
+                <a href="{{ route('report') }}">
+                    <span class="menu_icon"><i class="material-icons">&#xE241;</i></span>
+                    <span class="menu_title">Report</span>
+                </a>
+            </li>
             <li title="Employee" class="{{ (Request::is('employee') || Request::is('employee/*')) ? 'current_section' : '' }}">
                 <a href="{{ route('employee.index') }}">
                     <span class="menu_icon"><i class="material-icons">&#xE87C;</i></span>
                     <span class="menu_title">Employee</span>
                 </a>
-                <ul>
-                    <li class="{{ (Request::is('employee')) ? 'act_item' : '' }}">
-                        <a href="{{ route('employee.index') }}">List</a>
-                    </li>
-                    <li class="{{ (Request::is('employee/*')) ? 'act_item' : '' }}">
-                        <a href="{{ route('employee.create') }}">Add</a>
-                    </li>
-                </ul>
             </li>
-            <li title="Department" class="{{ (Request::is('department') || Request::is('department/*')) ? 'current_section' : '' }}">
-                <a href="{{ route('department.index') }}">
-                    <span class="menu_icon"><i class="material-icons">&#xE8C0;</i></span>
-                    <span class="menu_title">Department</span>
+            {{--<li title="Work" class="{{ (Request::is('work') || Request::is('work/*')) ? 'current_section' : '' }}">
+                <a href="{{ route('work.index') }}">
+                    <span class="menu_icon"><i class="material-icons">&#xE87B;</i></span>
+                    <span class="menu_title">Work</span>
                 </a>
-                <ul>
-                    <li class="{{ (Request::is('department')) ? 'act_item' : '' }}">
-                        <a href="{{ route('department.index') }}">List</a>
-                    </li>
-                    <li class="{{ (Request::is('department/*')) ? 'act_item' : '' }}">
-                        <a href="{{ route('department.create') }}">Add</a>
-                    </li>
-                </ul>
-            </li>
+            </li>--}}
             <li title="Work" class="{{ (Request::is('work') || Request::is('work/*')) ? 'current_section' : '' }}">
                 <a href="{{ route('work.index') }}">
                     <span class="menu_icon"><i class="material-icons">&#xE87B;</i></span>
@@ -69,17 +59,19 @@
                     </li>
                 </ul>
             </li>
-            <li title="Report" class="{{ (Request::is('report') || Request::is('report/*')) ? 'current_section' : '' }}">
-                <a href="{{ route('report') }}">
-                    <span class="menu_icon"><i class="material-icons">&#xE241;</i></span>
-                    <span class="menu_title">Report</span>
-                </a>
-            </li>
-            <li title="Settings" class="{{ (Request::is('zone') || Request::is('zone/*')) ? 'current_section' : '' }}">
-                <a href="{{ route('zone.index') }}">
+            <li title="Settings" class="{{ (Request::is('zone') || Request::is('zone/*') || Request::is('department') || Request::is('department/*')) ? 'current_section' : '' }}">
+                <a href="javascript:void(0)">
                     <span class="menu_icon"><i class="material-icons">&#xE8B8;</i></span>
                     <span class="menu_title">Settings</span>
                 </a>
+                <ul>
+                    <li title="Zone" class="{{ (Request::is('zone') || Request::is('zone/*')) ? 'act_item' : '' }}">
+                        <a href="{{ route('zone.index') }}">Zone</a>
+                    </li>
+                    <li title="Department & Price" class="{{ (Request::is('department') || Request::is('department/*')) ? 'act_item' : '' }}">
+                        <a href="{{ route('department.index') }}">Department & Price</a>
+                    </li>
+                </ul>
             </li>
             <li title="Sticky Notes">
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\models\Department;
 use App\Models\Employee;
 use App\Models\Zone;
 use App\Models\zones;
@@ -18,13 +19,13 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $data['employees'] = $this->model->with('zone')->get();
+        $data['employees'] = $this->model->with('department')->get();
         return view('employee.index', $data);
     }
 
-    public function create(Zone $zone)
+    public function create(Department $department)
     {
-        $data['zones'] = $zone->get();
+        $data['departments'] = $department->with('zone')->get();
         return view('employee.create', $data);
     }
 
@@ -32,7 +33,7 @@ class EmployeeController extends Controller
     {
         try{
             $validator = \Validator::make($request->all(),[
-                'zone_id' => 'required',
+                'department_id' => 'required',
                 'name' => 'required|unique:employees,name',
                 /*'aadhar_card_no' => 'numeric|digits:12|unique:employees,aadhar_card_no'.$id,
                 'contact_no' => 'numeric|digits:10',*/
@@ -42,7 +43,7 @@ class EmployeeController extends Controller
                 return redirect()->route('employee.create')->withErrors($validator)->withInput();
             }
 
-            $inputArr = $request->only('zone_id', 'name', 'aadhar_card_no', 'contact_no', 'dob', 'address', 'note');
+            $inputArr = $request->only('department_id', 'name', 'contact_no', 'address', 'note');
             /*if(!empty($request->dob)){
                 $inputArr['dob'] = Carbon::createFromFormat('d-m-Y',$request->dob)->format('Y-m-d');
             }*/
@@ -59,11 +60,11 @@ class EmployeeController extends Controller
         //
     }
 
-    public function edit($id, Zone $zone)
+    public function edit($id, Department $department)
     {
-        $data['zones'] = $zone->get();
         $result = $this->model->find($id);
         if($result){
+            $data['departments'] = $department->with('zone')->get();
             $data['result'] = $result;
             return view('employee.edit', $data);
         }else{
@@ -75,22 +76,16 @@ class EmployeeController extends Controller
     {
         try{
             $validator = \Validator::make($request->all(),[
-                'zone_id' => 'required',
+                'department_id' => 'required',
                 'name' => 'required|unique:employees,name,'.$id,
-                'address' => 'required',
-                /*'aadhar_card_no' => 'numeric|digits:12|unique:employees,aadhar_card_no'.$id,
-                'contact_no' => 'numeric|digits:10',*/
+                'address' => 'required'
             ]);
             if($validator->fails()){
                 return redirect()->route('employee.edit', $id)->withErrors($validator)->withInput();
             }
-            $updateArr = $request->only('zone_id', 'name', 'aadhar_card_no', 'contact_no', 'dob', 'address', 'note');
-            /*if(!empty($request->dob)){
-                $updateArr['dob'] = Carbon::createFromFormat('d-m-Y',$request->dob)->format('Y-m-d');
-            }*/
+            $updateArr = $request->only('department_id', 'name', 'contact_no', 'address', 'note');
             $employee = $this->model->findOrFail($id);
             $res = $employee->update($updateArr);
-            //$res = $this->model->find($id)->fill($updateArr)->save();
             if($res){
                 $request->session()->flash('success', 'Employee info update successfully');
             }else{
@@ -115,5 +110,13 @@ class EmployeeController extends Controller
         }catch (\Exception $e){
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
         }
+    }
+
+    public function getInfo(Zone $zone, Request $request){
+        $data = $this->model->with('department')->find($request->employeeId);
+        if($data->department->zone_id > 0){
+            $data->department->zone_name = $zone->find($data->department->zone_id)->name;
+        }
+        return $data;
     }
 }

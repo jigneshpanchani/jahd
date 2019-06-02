@@ -2,11 +2,18 @@
 @section('title', 'Work List')
 
 @section('content')
-    <h4 class="heading_a uk-margin-bottom">Work List</h4>
+    <div class="uk-grid" data-uk-grid-margin>
+        <div class="uk-width-medium-5-6">
+            <h4 class="heading_a uk-margin-bottom">Work List</h4>
+        </div>
+        <div class="uk-width-medium-1-6 uk-text-right">
+            <a class="md-btn md-btn-primary md-btn-small md-btn-wave-light md-btn-icon" href="{{ route('work.create') }}"><i class="uk-icon-plus-circle"></i> Add</a>
+        </div>
+    </div>
     <div class="md-card uk-margin-medium-bottom">
         <div class="md-card-content">
             <div class="dt_colVis_buttons"></div>
-            <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
+            <table id="dt_default" class="uk-table" cellspacing="0" width="100%">
                 <thead>
                 <tr>
                     <th width="25%">Name</th>
@@ -46,16 +53,8 @@
 @push('scripts')
     <!-- datatables -->
     <script src="{{ asset('bower_components/datatables/media/js/jquery.dataTables.min.js') }}"></script>
-    <!-- datatables buttons-->
-    <script src="{{ asset('bower_components/datatables-buttons/js/dataTables.buttons.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/datatables/buttons.uikit.js') }}"></script>
-    <script src="{{ asset('bower_components/jszip/dist/jszip.min.js') }}"></script>
-    <script src="{{ asset('bower_components/datatables-buttons/js/buttons.html5.js') }}"></script>
-    <script src="{{ asset('bower_components/datatables-buttons/js/buttons.print.js') }}"></script>
-
     <!-- datatables custom integration -->
     <script src="{{ asset('assets/js/custom/datatables/datatables.uikit.min.js') }}"></script>
-
     <!--  datatables functions -->
     <script src="{{ asset('assets/js/pages/plugins_datatables.min.js') }}"></script>
 

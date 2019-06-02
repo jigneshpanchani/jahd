@@ -3,40 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\models\department;
+use App\Models\Zone;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
-    private $model;
-    public function __construct(department $department)
+    private $department;
+    public function __construct(Zone $zone, department $department)
     {
-        $this->model = $department;
+        $this->zone = $zone;
+        $this->department = $department;
     }
 
     public function index()
     {
-        $departments = $this->model->get();
-        return view('department.index', compact('departments'));
+        $data['departments'] = $this->department->with('zone')->get();
+        return view('department.index', $data);
     }
 
     public function create()
     {
-        return view('department.create');
+        $data['zones'] = $this->zone->get();
+        return view('department.create', $data);
     }
 
     public function store(Request $request)
     {
         try{
             $validator = \Validator::make($request->all(),[
-                'name' => 'required|unique:departments,name',
+                'zone_id' => 'required',
+                'name' => 'required',
                 'price' => 'required'
             ]);
             if($validator->fails()){
                 return redirect()->route('department.create')->withErrors($validator)->withInput();
             }
 
-            $inputArr = $request->only('name', 'price', 'note');
-            $this->model->create($inputArr);
+            $inputArr = $request->only('zone_id','name', 'price', 'note');
+            $this->department->create($inputArr);
             $request->session()->flash('success', 'New department add successfully');
             return redirect()->route('department.create');
         }catch(\Exception $e){
@@ -51,7 +55,8 @@ class DepartmentController extends Controller
 
     public function edit($id)
     {
-        $result = $this->model->find($id);
+        $data['zones'] = $this->zone->get();
+        $result = $this->department->find($id);
         if($result){
             $data['result'] = $result;
             return view('department.edit', $data);
@@ -64,14 +69,14 @@ class DepartmentController extends Controller
     {
         try{
             $validator = \Validator::make($request->all(),[
-                'name' => 'required|unique:departments,name,'.$id,
+                'name' => 'required',
                 'price' => 'required'
             ]);
             if($validator->fails()){
                 return redirect()->route('department.edit', $id)->withErrors($validator)->withInput();
             }
             $updateArr = $request->only('name', 'price', 'note');
-            $department = $this->model->findOrFail($id);
+            $department = $this->department->findOrFail($id);
             $res = $department->update($updateArr);
 
             if($res){
@@ -88,7 +93,7 @@ class DepartmentController extends Controller
     public function destroy($id)
     {
         try{
-            $department = $this->model->findOrFail($id);
+            $department = $this->department->findOrFail($id);
             $res = $department->delete($id);
             if($res){
                 return response()->json(['title' => 'Deleted!', 'status' => 'success', 'msg' => 'Department detail delete successfully.']);
@@ -101,6 +106,6 @@ class DepartmentController extends Controller
     }
 
     public function getPrice(Request $request){
-        return $this->model->findOrFail($request->departmentId)->price;
+        return $this->department->findOrFail($request->departmentId)->price;
     }
 }

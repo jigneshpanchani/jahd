@@ -7,11 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Employee extends Model
 {
     protected $fillable =[
-        'zone_id',
+        'department_id',
         'name',
-        'aadhar_card_no',
         'contact_no',
-        'dob',
         'address',
         'note'
     ];
@@ -20,7 +18,7 @@ class Employee extends Model
         return $this->hasMany(Work::class);
     }
 
-    public function zone(){
-        return $this->belongsTo(Zone::class);
+    public function department(){
+        return $this->belongsTo(Department::class);
     }
 }

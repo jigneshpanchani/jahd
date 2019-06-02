@@ -5,13 +5,12 @@
 @section('content')
     <div class="uk-grid" data-uk-grid-margin>
         <div class="uk-width-medium-5-6">
-            <h3 class="heading_b uk-margin-bottom">Create New Zone</h3>
+            <h4 class="heading_a uk-margin-bottom">Create New Zone</h4>
         </div>
-        <div class="uk-width-medium-1-6">
-            <a class="md-btn md-btn-primary md-btn-small md-btn-wave-light md-btn-icon" href="{{ route('zone.index') }}"><i class="uk-icon-list"></i> List</a>
+        <div class="uk-width-medium-1-6 uk-text-right">
+            <a class="md-btn md-btn-primary md-btn-small md-btn-wave-light md-btn-icon" href="{{ route('zone.index') }}"><i class="uk-icon-arrow-circle-left"></i> List</a>
         </div>
     </div>
-
     <div class="md-card">
         <div class="md-card-content large-padding">
             <form name="zone_add" id="form_validation" class="uk-form-stacked" method="post" action="{{ route('zone.store') }}">

@@ -43,11 +43,16 @@ class reportController extends Controller
 
     public function generate(Request $request){
         if($request->input()){
+            $data['search'] = $request->input();
             $data['result'] = $this->report->generateReport($request->input());
             return view('report.show', $data);
         }else{
             return redirect()->route('report');
         }
+    }
+
+    public function demo(){
+        return view('report.demo1');
     }
 
 }

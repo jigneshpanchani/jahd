@@ -25,8 +25,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'DashboardController@index')->name('home');
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
-    Route::match(['get','post'], '/work/add/', 'WorkController@add')->name('work.add');
-    Route::post('/department/get-price', 'DepartmentController@getPrice')->name('get.price');
+    Route::post('/employee/get-info', 'EmployeeController@getInfo')->name('get.info');
     Route::match(['get','post'], '/report', 'ReportController@index')->name('report');
     Route::match(['get','post'], '/report/generate', 'ReportController@generate')->name('report.generate');
 

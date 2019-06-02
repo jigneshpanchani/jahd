@@ -19,13 +19,13 @@ class WorkController extends Controller
     
     public function index()
     {
-        $data['works'] = $this->model->with('employee', 'department')->get();
+        $data['works'] = $this->model->with('employee', 'department')->orderBy('id','DESC')->get();
         return view('work.index', $data);
     }
 
-    public function create(Zone $zone)
+    public function create(Employee $employee)
     {
-        $data['zones'] = $zone->get();
+        $data['employees'] = $employee->get();
         return view('work.create', $data);
     }
 
@@ -80,9 +80,7 @@ class WorkController extends Controller
     {
         $result = $this->model->find($id);
         if($result){
-            $data['employee'] = $employee->with('zone')->find($result->employee_id);
             $data['employees'] = $employee->get();
-            $data['departments'] = $department->get();
             $data['result'] = $result;
             return view('work.edit', $data);
         }else{

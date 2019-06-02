@@ -3,8 +3,14 @@
 @section('title', 'Edit Employee')
 
 @section('content')
-    <h3 class="heading_b uk-margin-bottom">Edit Employee Detail</h3>
-
+    <div class="uk-grid" data-uk-grid-margin>
+        <div class="uk-width-medium-5-6">
+            <h4 class="heading_a uk-margin-bottom">Edit Employee Detail</h4>
+        </div>
+        <div class="uk-width-medium-1-6 uk-text-right">
+            <a class="md-btn md-btn-primary md-btn-small md-btn-wave-light md-btn-icon" href="{{ route('employee.index') }}"><i class="uk-icon-arrow-circle-left"></i> List</a>
+        </div>
+    </div>
     <div class="md-card">
         <div class="md-card-content large-padding">
             <form name="employee_edit" id="form_validation" class="uk-form-stacked" method="post" action="{{ route('employee.update', $result['id']) }}">
@@ -12,10 +18,10 @@
                 {{ csrf_field() }}
                 <div class="uk-grid" data-uk-grid-margin>
                     <div class="uk-width-medium-1-2">
-                        <select id="zone_id" name="zone_id" data-md-selectize data-md-selectize-bottom data-uk-tooltip="{pos:'top'}" title="Select Zone" required>
-                            <option value="">Select Zone</option>
-                            @foreach($zones as $zone)
-                                <option value="{{ $zone->id }}" {{ ($zone->id==$result['zone_id'])?'selected':'' }}>{{ $zone->name }}</option>
+                        <select id="department_id" name="department_id" data-md-selectize data-md-selectize-bottom data-uk-tooltip="{pos:'top'}" title="Select Zone" required>
+                            <option value="">Select Zone & Department</option>
+                            @foreach($departments as $department)
+                                <option value="{{ $department->id }}" {{ ($department->id==$result['department_id'])?'selected':'' }}>{{ $department->zone->name.' ('.$department->name.')'}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -25,23 +31,6 @@
                         <div class="parsley-row">
                             <label for="name">Full Name<span class="req"> * </span></label>
                             <input type="text" name="name" value="{{ (!empty($result['name'])) ? $result['name'] : old('name') }}" required class="md-input"/>
-                        </div>
-                    </div>
-                    <div class="uk-width-medium-1-2">
-                        <div class="parsley-row">
-                            <label for="aadhar_card_no">Aadhar No</label>
-                            <input type="number" name="aadhar_card_no" value="{{ (!empty($result['aadhar_card_no'])) ? $result['aadhar_card_no'] : old('aadhar_card_no') }}" class="md-input"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="uk-grid" data-uk-grid-margin>
-                    <div class="uk-width-medium-1-2">
-                        <div class="parsley-row">
-                            <label for="val_birth">Birth Date</label>
-                            <input type="text" name="dob" id="val_birth" value="{{ (!empty($result['dob'])) ? $result['dob'] : old('dob') }}" class="md-input"
-                                   data-parsley-americandate
-                                   data-parsley-americandate-message="This value should be a valid date (YYYY-MM-DD)"
-                                   data-uk-datepicker="{format:'YYYY-MM-DD'}"/>
                         </div>
                     </div>
                     <div class="uk-width-medium-1-2">

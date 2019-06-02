@@ -6,7 +6,7 @@
         <div class="uk-width-medium-5-6">
             <h4 class="heading_a uk-margin-bottom">Zone List</h4>
         </div>
-        <div class="uk-width-medium-1-6">
+        <div class="uk-width-medium-1-6 uk-text-right">
             <a class="md-btn md-btn-primary md-btn-small md-btn-wave-light md-btn-icon" href="{{ route('zone.create') }}"><i class="uk-icon-plus-circle"></i> Add</a>
         </div>
     </div>

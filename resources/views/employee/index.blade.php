@@ -2,15 +2,23 @@
 @section('title', 'Employee List')
 
 @section('content')
-    <h4 class="heading_a uk-margin-bottom">Employee List</h4>
+    <div class="uk-grid" data-uk-grid-margin>
+        <div class="uk-width-medium-5-6">
+            <h4 class="heading_a uk-margin-bottom">Employee List</h4>
+        </div>
+        <div class="uk-width-medium-1-6 uk-text-right">
+            <a class="md-btn md-btn-primary md-btn-small md-btn-wave-light md-btn-icon" href="{{ route('employee.create') }}"><i class="uk-icon-plus-circle"></i> Add</a>
+        </div>
+    </div>
     <div class="md-card uk-margin-medium-bottom">
         <div class="md-card-content">
             <div class="dt_colVis_buttons"></div>
             <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th width="30%">Name</th>
-                    <th width="20%">Zone</th>
+                    <th width="20%">Name</th>
+                    <th width="15%">Zone</th>
+                    <th width="15%">Department</th>
                     <th width="20%">Contact No</th>
                     <th width="20%">Address</th>
                     <th width="10%">Action</th>
@@ -21,7 +29,8 @@
                 @foreach($employees as $row)
                     <tr>
                         <td>{{ $row['name'] }}</td>
-                        <td>{{ $row->zone['name'] }}</td>
+                        <td>{{ $row->department->zone['name'] }}</td>
+                        <td>{{ $row->department['name'] }}</td>
                         <td>{{ $row['contact_no'] }}</td>
                         <td>{{ $row['address'] }}</td>
                         <td>

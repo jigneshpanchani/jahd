@@ -2,15 +2,23 @@
 @section('title', 'Department List')
 
 @section('content')
-    <h4 class="heading_a uk-margin-bottom">Department List</h4>
+    <div class="uk-grid" data-uk-grid-margin>
+        <div class="uk-width-medium-5-6">
+            <h4 class="heading_a uk-margin-bottom">Department List</h4>
+        </div>
+        <div class="uk-width-medium-1-6 uk-text-right">
+            <a class="md-btn md-btn-primary md-btn-small md-btn-wave-light md-btn-icon" href="{{ route('department.create') }}"><i class="uk-icon-plus-circle"></i> Add</a>
+        </div>
+    </div>
     <div class="md-card uk-margin-medium-bottom">
         <div class="md-card-content">
-            <table id="dt_tableExport" class="uk-table" cellspacing="0" width="100%">
+            <table id="dt_default" class="uk-table" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th width="50%">Name</th>
-                    <th width="35%">Price(Rs)</th>
-                    <th width="15%">Action</th>
+                    <th width="30%">Zone</th>
+                    <th width="30%">Name</th>
+                    <th width="30%">Price(Rs)</th>
+                    <th width="10%">Action</th>
                 </tr>
                 </thead>
 
@@ -18,6 +26,7 @@
                 @if(count($departments)>0)
                 @foreach($departments as $row)
                     <tr>
+                        <td>{{ $row['zone']->name }}</td>
                         <td>{{ $row['name'] }}</td>
                         <td>{{ $row['price'] }}</td>
                         <td>
@@ -37,12 +46,6 @@
 @push('scripts')
     <!-- datatables -->
     <script src="{{ asset('bower_components/datatables/media/js/jquery.dataTables.min.js') }}"></script>
-    <!-- datatables buttons-->
-    <script src="{{ asset('bower_components/datatables-buttons/js/dataTables.buttons.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/datatables/buttons.uikit.js') }}"></script>
-    <script src="{{ asset('bower_components/jszip/dist/jszip.min.js') }}"></script>
-    <script src="{{ asset('bower_components/datatables-buttons/js/buttons.html5.js') }}"></script>
-    <script src="{{ asset('bower_components/datatables-buttons/js/buttons.print.js') }}"></script>
 
     <!-- datatables custom integration -->
     <script src="{{ asset('assets/js/custom/datatables/datatables.uikit.min.js') }}"></script>
