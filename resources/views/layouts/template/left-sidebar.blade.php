@@ -71,6 +71,9 @@
                     <li title="Department & Price" class="{{ (Request::is('department') || Request::is('department/*')) ? 'act_item' : '' }}">
                         <a href="{{ route('department.index') }}">Department & Price</a>
                     </li>
+                    <li title="Remove Oldest Work Record" class="{{ (Request::is('work/remove')) ? 'act_item' : '' }}">
+                        <a href="{{ route('work.remove') }}">Remove Oldest Work</a>
+                    </li>
                 </ul>
             </li>
             <li title="Sticky Notes">

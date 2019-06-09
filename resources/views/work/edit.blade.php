@@ -23,7 +23,7 @@
                             <input type="text" name="date" id="val_date" class="md-input" value="{{ (!empty($result['date'])) ? $result['date'] : old('date') }}"
                                    data-parsley-americandate
                                    data-parsley-americandate-message="This value should be a valid date (YYYY-MM-DD)"
-                                   data-uk-datepicker="{format:'YYYY-MM-DD'}"/>
+                                   data-uk-datepicker="{format:'YYYY-MM-DD'}" required/>
                         </div>
                     </div>
                 </div>

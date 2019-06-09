@@ -28,13 +28,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/employee/get-info', 'EmployeeController@getInfo')->name('get.info');
     Route::match(['get','post'], '/report', 'ReportController@index')->name('report');
     Route::match(['get','post'], '/report/generate', 'ReportController@generate')->name('report.generate');
-
-    Route::get('/report/demo', 'ReportController@demo');
+    Route::match(['get','post'], '/work/remove', 'WorkController@remove')->name('work.remove');
 
     Route::resource('employee', 'EmployeeController');
     Route::resource('department', 'DepartmentController');
     Route::resource('work', 'WorkController');
     Route::resource('zone', 'ZoneController');
+
+
+    Route::get('employeewise','ReportController@employeewise');
 
 });
 

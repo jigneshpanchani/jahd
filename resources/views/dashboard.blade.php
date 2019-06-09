@@ -39,8 +39,8 @@
                     <div class="uk-float-right uk-margin-top uk-margin-small-right">
                         <span class="peity_orders peity_data">64/100</span>
                     </div>
-                    <span class="uk-text-muted uk-text-small">Orders Completed</span>
-                    <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript>64</noscript></span>%</h2>
+                    <span class="uk-text-muted uk-text-small">Zone</span>
+                    <h2 class="uk-margin-remove"><span class="countUpMe">0<noscript>{{ isset($zone)?$zone:0 }}</noscript></span>
                 </div>
             </div>
         </div>

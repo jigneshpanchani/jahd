@@ -16,14 +16,18 @@
                                 <label for="radio_type_1" class="inline-label">Zone wise</label>
                             </span>
                             <span class="icheck-inline">
-                                <input type="radio" name="radio_type" id="radio_type_2" class="type_id" value="E" data-md-icheck required/>
-                                <label for="radio_type_2" class="inline-label">Employee wise</label>
+                                <input type="radio" name="radio_type" id="radio_type_2" class="type_id" value="D" data-md-icheck required/>
+                                <label for="radio_type_2" class="inline-label">Department wise</label>
+                            </span>
+                            <span class="icheck-inline">
+                                <input type="radio" name="radio_type" id="radio_type_3" class="type_id" value="E" data-md-icheck required/>
+                                <label for="radio_type_3" class="inline-label">Employee wise</label>
                             </span>
                         </div>
                     </div>
                 </div>
                 <div class="uk-grid" data-uk-grid-margin>
-                    <div class="uk-width-medium-1-3 zone_list" style="display: none;">
+                    <div class="uk-width-medium-1-3 zone_list radio_list" style="display: none;">
                         <select id="zone_id" name="zone_id" data-md-selectize data-md-selectize-bottom data-uk-tooltip="{pos:'top'}" title="Select Zone">
                             <option value="">Select Zone</option>
                             @foreach($zones as $zone)
@@ -32,7 +36,15 @@
                             <option value="ALL">ALL</option>
                         </select>
                     </div>
-                    <div class="uk-width-medium-1-3 emp_list" style="display: none;">
+                    <div class="uk-width-medium-1-3 dprt_list radio_list" style="display: none;">
+                        <select id="department_id" name="department_id" data-md-selectize data-md-selectize-bottom data-uk-tooltip="{pos:'top'}" title="Select Department">
+                            <option value="">Select Department</option>
+                            @foreach($departments as $department)
+                                <option value="{{ $department->id }}" {{ ($department->id==old('department_id'))?'selected':'' }}>{{ $department->zone->name.' ('.$department->name.')'}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="uk-width-medium-1-3 emp_list radio_list" style="display: none;">
                         <select id="employee_id" name="employee_id" data-md-selectize data-md-selectize-bottom data-uk-tooltip="{pos:'top'}" title="Select Employee">
                             <option value="">Select Employee</option>
                             @foreach($employees as $emp)
@@ -74,15 +86,15 @@
         $(document).ready(function () {
             $('body').on('ifChecked', '.type_id', function () {
                 let typeId = $(this).val();
-                if(typeId == 'E'){
-                    $('.emp_list').show();
-                    $('.zone_list').hide();
-                }else if(typeId == 'Z'){
+                $('.radio_list').hide();
+                if (typeId == 'Z') {
                     $('.zone_list').show();
-                    $('.emp_list').hide();
+                } else if (typeId == 'D') {
+                    $('.dprt_list').show();
+                }else if(typeId == 'E'){
+                    $('.emp_list').show();
                 }else{
-                    $('.zone_list').hide();
-                    $('.emp_list').hide();
+                    $('.radio_list').hide();
                 }
             });
         });

@@ -6,7 +6,7 @@ use App\Models\Work;
 use App\Models\Employee;
 use App\Models\Department;
 use App\Models\Zone;
-use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
 
 class WorkController extends Controller
@@ -27,19 +27,6 @@ class WorkController extends Controller
     {
         $data['employees'] = $employee->get();
         return view('work.create', $data);
-    }
-
-    public function add(Employee $employee, Department $department, Zone $zone, Request $request)
-    {
-        if($request->input('zone')){
-            $zoneId = $request->input('zone');
-            $data['employees'] = $employee->where('zone_id', $zoneId)->get();
-            $data['zone'] = $zone->find($zoneId);
-            $data['departments'] = $department->get();
-            return view('work.add', $data);
-        }else{
-            return redirect()->route('work.create');
-        }
     }
 
     public function store(Request $request)
@@ -134,4 +121,32 @@ class WorkController extends Controller
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
         }
     }
+
+    public function remove(Request $request){
+
+        if($request->input()){
+            try{
+                $start = $request->start_date;
+                $end = $request->end_date;
+                if(strtotime($start) < strtotime($end)){
+                    $res = DB::table('works')
+                        ->where('date', '>=', $start)
+                        ->where('date', '<=', $end)
+                        ->delete();
+                    if($res){
+                        $request->session()->flash('success', 'Oldest Work data delete successfully.');
+                    }else{
+                        $request->session()->flash('error', 'Oops...Something want wrong. Please try again.');
+                    }
+                }else{
+                    $request->session()->flash('error', 'Start date greater from End date.');
+                }
+                return redirect()->route('work.remove');
+            }catch (\Exception $e){
+                return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
+            }
+        }
+        return view('work.remove');
+    }
+
 }

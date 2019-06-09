@@ -14,34 +14,32 @@ class Report extends Model
         $end = $data['end_date'];
 
         $whereArr = array();
-        if($type == 'Z')
-        {
+        if($type == 'Z'){
             if((!empty($data['zone_id'])) && ($data['zone_id'] != 'ALL')){
                 $whereArr[] = ['d.zone_id', '=', $data['zone_id']];
             }
             $groupByArr = ['e.id'];
-        }
-        else if($type == 'E')
-        {
+        }else if($type == 'D'){
+            if(!empty($data['department_id'])){
+                $whereArr[] = ['d.id', '=', $data['department_id']];
+            }
+            $groupByArr = ['e.id'];
+        }else if($type == 'E'){
             if((!empty($data['employee_id'])) && ($data['employee_id'] != 'ALL')){
                 $whereArr[] = ['e.id', '=', $data['employee_id']];
                 $groupByArr = ['w.id'];
-            } else if ($data['employee_id'] == 'ALL'){
+            }else{
                 $groupByArr = ['e.id'];
             }
         }else{
             $groupByArr = ['w.id'];
         }
 
-        if(!empty($start) && !empty($end)){
+        if(!empty($start)){
             $whereArr[] = ['w.date', '>=', $start];
+        }
+        if(!empty($end)){
             $whereArr[] = ['w.date', '<=', $end];
-        }else if(!empty($start)){
-            $whereArr[] = ['w.date', '>=', $start];
-        }else if(!empty($end)){
-            $whereArr[] = ['w.date', '<=', $end];
-        }else{
-            //
         }
         //dd($whereArr);
 
@@ -59,14 +57,12 @@ class Report extends Model
                 'w.price',
                 DB::raw('SUM(w.quantity) as quantity'),
                 DB::raw('SUM(w.withdrawal) as withdrawal'),
-                DB::raw('SUM(w.salary) as salary'),
                 DB::raw('SUM(w.total) as total')
                 )
-            ->groupBy($groupByArr)
             ->orderBy('w.date', 'DESC')
+            ->groupBy($groupByArr)
             ->get();
 
         return $res;
-//        dd($res);
     }
 }
