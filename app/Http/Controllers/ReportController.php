@@ -99,31 +99,4 @@ class reportController extends Controller
         return $title;
     }
 
-   public function employeewise(Request $request){
-
-    $start_date = $request->start_date = '2019-01-01';
-
-    $end_date = $request->end_date = '2019-12-01';
-
-    $employees =  Employee::with(['works'=>function($q) use($start_date,$end_date){
-    if(!empty($end_date)){
-        $q = $q->where('date','>=',$start_date);        
-    }
-
-    if(!empty($end_date)){
-        $q = $q->where('date','<=',$end_date);        
-    }
-
-   },'department.zone'])
-    ->where('name','E3')
-    ->get();
-
-    // foreach ($employees as $key => $value) {
-        # code...
-    // }
-
-    // dd($employees);
-
-   }
-
 }
