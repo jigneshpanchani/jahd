@@ -20,10 +20,10 @@
                     <div class="uk-width-medium-1-4">
                         <div class="parsley-row">
                             <label for="val_date">Working Date</label>
-                            <input type="text" name="date" id="val_date" class="md-input" value="{{ (!empty($result['date'])) ? $result['date'] : old('date') }}"
+                            <input type="text" name="date" id="val_date" class="md-input" value="{{ (!empty($result['date'])) ? displayDate($result['date']) : old('date') }}"
                                    data-parsley-americandate
-                                   data-parsley-americandate-message="This value should be a valid date (YYYY-MM-DD)"
-                                   data-uk-datepicker="{format:'YYYY-MM-DD'}" required/>
+                                   data-parsley-americandate-message="This value should be a valid date (DD-MM-YYYY)"
+                                   data-uk-datepicker="{format:'DD-MM-YYYY'}" required/>
                         </div>
                     </div>
                 </div>

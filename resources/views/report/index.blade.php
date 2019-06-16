@@ -58,8 +58,8 @@
                             <label for="start_date">Start Date</label>
                             <input type="text" name="start_date" id="val_birth" value="{{old('start_date')}}" class="md-input"
                                    data-parsley-americandate
-                                   data-parsley-americandate-message="This value should be a valid date (YYYY-MM-DD)"
-                                   data-uk-datepicker="{format:'YYYY-MM-DD'}"/>
+                                   data-parsley-americandate-message="This value should be a valid date (DD-MM-YYYY)"
+                                   data-uk-datepicker="{format:'DD-MM-YYYY'}"/>
                         </div>
                     </div>
                     <div class="uk-width-large-1-4">
@@ -67,8 +67,8 @@
                             <label for="end_date">End Date</label>
                             <input type="text" name="end_date" id="val_birth" value="{{old('end_date')}}" class="md-input"
                                    data-parsley-americandate
-                                   data-parsley-americandate-message="This value should be a valid date (YYYY-MM-DD)"
-                                   data-uk-datepicker="{format:'YYYY-MM-DD'}"/>
+                                   data-parsley-americandate-message="This value should be a valid date (DD-MM-YYYY)"
+                                   data-uk-datepicker="{format:'DD-MM-YYYY'}"/>
                         </div>
                     </div>
                     <div class="uk-width-large-1-6 uk-text-right">

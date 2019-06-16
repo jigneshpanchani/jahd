@@ -8,7 +8,7 @@
     <link rel="icon" type="image') }}" href="{{ asset('assets/img/favicon-16x16.png') }}" sizes="16x16">
     <link rel="icon" type="image') }}" href="{{ asset('assets/img/favicon-32x32.png') }}" sizes="32x32">
 
-    <title>{{ config('app.name') }} - @yield('title')</title>
+    <title>{{ config('app.name') }}@yield('title')</title>
 
     <!-- additional styles for plugins -->
     <!-- weather icons -->

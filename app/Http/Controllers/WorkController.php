@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\Department;
 use App\Models\Zone;
 use DB;
+use Carbon;
 use Illuminate\Http\Request;
 
 class WorkController extends Controller
@@ -47,13 +48,13 @@ class WorkController extends Controller
 
             $inputArr = $request->only('date', 'employee_id', 'department_id', 'price', 'quantity', 'withdrawal', 'salary', 'note');
             $inputArr['total'] = ($request->price * $request->quantity);
-                /*if(!empty($request->date)){
-                    $inputArr['date'] = Carbon::createFromFormat('d.m.Y',$request->date)->format('Y-m-d');
-                }*/
+            if(!empty($request->date)){
+                $inputArr['date'] = Carbon\Carbon::parse($request->date)->format('Y-m-d');
+            }
 
             $this->model->create($inputArr);
             $request->session()->flash('success', 'Work add successfully');
-            return redirect()->route('work.create');
+            return redirect()->route('work.create')->withInput();
         }catch(\Exception $e){
             return redirect()->route('work.create')->with('error', $e->getMessage())->withInput();
         }
@@ -93,6 +94,10 @@ class WorkController extends Controller
             }
             $updateArr = $request->only('date', 'employee_id', 'department_id', 'price', 'quantity', 'withdrawal', 'salary', 'note');
             $updateArr['total'] = ($request->price * $request->quantity);
+            if(!empty($request->date)){
+                $updateArr['date'] = Carbon\Carbon::parse($request->date)->format('Y-m-d');
+            }
+
             $work = $this->model->findOrFail($id);
             $res = $work->update($updateArr);
 

@@ -77,7 +77,7 @@ class reportController extends Controller
 
             if(!empty($data['employee_id']) && $data['employee_id'] != 'ALL'){
                 $res = $this->employee->with('department.zone')->find($data['employee_id']);
-                $name = "Work Report of Employee ".$res->name." with ".$res->department->zone->name ."(".$res->department->name.") ";
+                $name = "Work Report of Employee ".$res->name." with ".$res->department->zone->name ." (".$res->department->name.") ";
             }else{
                 $name = "All Employees's Work Report ";
             }

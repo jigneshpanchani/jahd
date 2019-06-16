@@ -63,7 +63,7 @@
                                 <td>{{ number_format($row->withdrawal) }}</td>
                                 <td>{{ number_format(($row->total - $row->withdrawal)) }}</td>
                                 @if($search['employee_id'] != 'ALL' && $search['employee_id'] > 0)
-                                    <td>{{ $row->date }}</td>
+                                    <td>{{ date('d-m-Y', strtotime($row->date)) }}</td>
                                 @endif
                             </tr>
                         @endforeach

@@ -19,10 +19,10 @@
                     <div class="uk-width-medium-1-4">
                         <div class="parsley-row">
                             <label for="val_date">Working Date</label>
-                            <input type="text" name="date" id="val_date" class="md-input" value="{{ date('Y-m-d') }}"
+                            <input type="text" name="date" id="val_date" class="md-input" value="{{ old('date') }}"
                                    data-parsley-americandate
-                                   data-parsley-americandate-message="This value should be a valid date (YYYY-MM-DD)"
-                                   data-uk-datepicker="{format:'YYYY-MM-DD'}" required/>
+                                   data-parsley-americandate-message="This value should be a valid date (DD-MM-YYYY)"
+                                   data-uk-datepicker="{format:'DD-MM-YYYY'}" required/>
                         </div>
                     </div>
                 </div>
@@ -106,6 +106,13 @@
     <script src="{{ asset('js/pages/form_validation.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            var oldData = $('#employee_id').val();
+            if(oldData > 0){
+                setTimeout(function () {
+                    $('#employee_id').trigger('change');
+                },1000);
+            }
+
             $('body').on('change', '#employee_id', function () {
                 let employeeId = $(this).val();
                 $.ajax({

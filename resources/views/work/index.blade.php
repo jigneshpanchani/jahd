@@ -34,7 +34,7 @@
                             <td>{{ $row['price'] }}</td>
                             <td>{{ $row['quantity'] }}</td>
                             <td>{{ number_format(($row['price'] * $row['quantity']), 2) }}</td>
-                            <td>{{ $row['date'] }}</td>
+                            <td>{{ date('d-m-Y', strtotime($row['date'])) }}</td>
                             <td>
                                 <a href="{{ route('work.edit', $row['id']) }}" class="md-btn md-btn-twitter md-btn-mini md-btn-icon" title="Edit"><i class="uk-icon-edit uk-icon-small"></i></a>&nbsp;&nbsp;&nbsp;
                                 <a href="javascript:void(0);" title="Delete" data-id="{{$row['id']}}" class="md-btn md-btn-danger md-btn-mini md-btn-icon deleteRecord"><i class="uk-icon-trash uk-icon-small"></i></a>&nbsp;

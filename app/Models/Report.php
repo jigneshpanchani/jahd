@@ -10,8 +10,8 @@ class Report extends Model
     public function generateReport($data)
     {
         $type = $data['radio_type'];
-        $start = $data['start_date'];
-        $end = $data['end_date'];
+        $start = (!empty($data['start_date'])) ? date('Y-m-d', strtotime($data['start_date'])) : '';
+        $end = (!empty($data['end_date'])) ? date('Y-m-d', strtotime($data['end_date'])) : '';
 
         $whereArr = array();
         if($type == 'Z'){
