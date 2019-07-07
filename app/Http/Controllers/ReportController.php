@@ -43,9 +43,19 @@ class reportController extends Controller
 
     public function generate(Request $request){
         if($request->input()){
-            $data['title'] = $this->makeTitle($request->input());
-            $data['search'] = $request->input();
+            $filter = $request->input();
+            $data['search'] = $filter;
             $data['result'] = $this->report->generateReport($request->input());
+            if($filter['radio_type'] != 'E'){
+                $count = count($data['result']);
+                $displayCount = ($count > 0) ? " (Employee : $count)" : '';
+            }elseif ($filter['radio_type'] == 'E' && $filter['employee_id'] == 'ALL'){
+                $count = count($data['result']);
+                $displayCount = ($count > 0) ? " (Employee : $count)" : '';
+            }else{
+                $displayCount = '';
+            }
+            $data['title'] = $this->makeTitle($request->input(), $displayCount);
             //dd($data);
             return view('report.show', $data);
         }else{
@@ -53,24 +63,24 @@ class reportController extends Controller
         }
     }
 
-    public function makeTitle($data){
+    public function makeTitle($data, $displayCount=''){
 
         if($data['radio_type'] == 'Z'){
 
             if(!empty($data['zone_id']) && $data['zone_id'] != 'ALL'){
                 $res = $this->zone->find($data['zone_id']);
-                $name = "Work Report of ".$res->name."'s Zone ";
+                $name = "Work Report of ".$res->name."'s Zone $displayCount";
             }else{
-                $name = "All Zone's Work Report ";
+                $name = "All Zone's Work Report $displayCount";
             }
 
         }elseif($data['radio_type'] == 'D'){
 
             if(!empty($data['department_id']) && $data['department_id'] != 'ALL'){
                 $res = $this->department->with('zone')->find($data['department_id']);
-                $name = "Work Report of ". $res->zone->name. " with department of ". $res->name. " ";
+                $name = "Work Report of ". $res->zone->name. " with department of ". $res->name. $displayCount;
             }else{
-                $name = "All Department's Work Report ";
+                $name = "All Department's Work Report $displayCount";
             }
 
         }elseif($data['radio_type'] == 'E'){
@@ -79,7 +89,7 @@ class reportController extends Controller
                 $res = $this->employee->with('department.zone')->find($data['employee_id']);
                 $name = "Work Report of Employee ".$res->name." with ".$res->department->zone->name ." (".$res->department->name.") ";
             }else{
-                $name = "All Employees's Work Report ";
+                $name = "All Employees's Work Report $displayCount";
             }
         }else{
             $name = "";

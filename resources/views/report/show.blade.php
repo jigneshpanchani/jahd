@@ -107,7 +107,12 @@
                 $.each(arr, function (key, value){
                     let pageTotal = table.column( key, {'page': 'current'}).data().sum();
                     let total = table.column( key ).data().sum();
-                    let display = currencyFormat(pageTotal)+' <br>('+currencyFormat(total)+')';
+                    let display = '';
+                    if(key == '3'){
+                        display = currencyFormat(pageTotal.toFixed(2))+' <br>('+currencyFormat(total.toFixed(2))+')';
+                    }else{
+                        display = currencyFormat(pageTotal)+' <br>('+currencyFormat(total)+')';
+                    }
                     $('.sum'+value).html(display);
                 });
             }
