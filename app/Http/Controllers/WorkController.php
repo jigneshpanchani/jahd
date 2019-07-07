@@ -6,9 +6,10 @@ use App\Models\Work;
 use App\Models\Employee;
 use App\Models\Department;
 use App\Models\Zone;
-use DB;
 use Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class WorkController extends Controller
 {
@@ -116,6 +117,7 @@ class WorkController extends Controller
     {
         try{
             $work = $this->model->findOrFail($id);
+            $this->historyAdd($work);
             $res = $work->delete($id);
             if($res){
                 return response()->json(['title' => 'Deleted!', 'status' => 'success', 'msg' => 'Work detail delete successfully.']);
@@ -152,6 +154,16 @@ class WorkController extends Controller
             }
         }
         return view('work.remove');
+    }
+
+    public function historyAdd($data){
+        $logArr = array(
+            'data' =>json_encode($data),
+            'description' => 'Delete work data',
+            'user_id' => Auth::user()->id
+        );
+        DB::table('log')->insert($logArr);
+        return TRUE;
     }
 
 }

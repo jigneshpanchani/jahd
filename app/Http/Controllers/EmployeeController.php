@@ -6,6 +6,8 @@ use App\models\Department;
 use App\Models\Employee;
 use App\Models\Zone;
 use App\Models\zones;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -101,6 +103,7 @@ class EmployeeController extends Controller
     {
         try{
             $employee = $this->model->findOrFail($id);
+            $this->historyAdd($employee);
             $res = $employee->delete($id);
             if($res){
                 return response()->json(['title' => 'Deleted!', 'status' => 'success', 'msg' => 'Employee detail delete successfully.']);
@@ -118,5 +121,15 @@ class EmployeeController extends Controller
             $data->department->zone_name = $zone->find($data->department->zone_id)->name;
         }
         return $data;
+    }
+
+    public function historyAdd($data){
+        $logArr = array(
+            'data' =>json_encode($data),
+            'description' => 'Delete employee record',
+            'user_id' => Auth::user()->id
+        );
+        DB::table('log')->insert($logArr);
+        return TRUE;
     }
 }

@@ -57,7 +57,7 @@
                                 <td>{{ $row->employee_name }}</td>
                                 <td>{{ $row->department_name }}</td>
                                 <td>{{ $row->zone_name }}</td>
-                                <td>{{ number_format($row->price) }}</td>
+                                <td>{{ number_format((float)$row->price, 2, '.', '') }}</td>
                                 <td>{{ number_format($row->quantity) }}</td>
                                 <td>{{ number_format($row->total) }}</td>
                                 <td>{{ number_format($row->withdrawal) }}</td>

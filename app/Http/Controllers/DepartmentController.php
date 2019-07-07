@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\models\department;
 use App\Models\Zone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DepartmentController extends Controller
 {
@@ -94,6 +96,7 @@ class DepartmentController extends Controller
     {
         try{
             $department = $this->department->findOrFail($id);
+            $this->historyAdd($department);
             $res = $department->delete($id);
             if($res){
                 return response()->json(['title' => 'Deleted!', 'status' => 'success', 'msg' => 'Department detail delete successfully.']);
@@ -107,5 +110,15 @@ class DepartmentController extends Controller
 
     public function getPrice(Request $request){
         return $this->department->findOrFail($request->departmentId)->price;
+    }
+
+    public function historyAdd($data){
+        $logArr = array(
+            'data' =>json_encode($data),
+            'description' => 'Delete department data',
+            'user_id' => Auth::user()->id
+        );
+        DB::table('log')->insert($logArr);
+        return TRUE;
     }
 }

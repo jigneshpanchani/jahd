@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Zone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 class ZoneController extends Controller
 {
@@ -87,6 +90,7 @@ class ZoneController extends Controller
     {
         try{
             $zone = $this->model->findOrFail($id);
+            $this->historyAdd($zone);
             $res = $zone->delete($id);
             if($res){
                 return response()->json(['title' => 'Deleted!', 'status' => 'success', 'msg' => 'Zone detail delete successfully.']);
@@ -96,6 +100,16 @@ class ZoneController extends Controller
         }catch (\Exception $e){
             return response()->json(['status' => 'error', 'msg' => $e->getMessage()]);
         }
+    }
+
+    public function historyAdd($data){
+        $logArr = array(
+            'data' =>json_encode($data),
+            'description' => 'Delete single zone',
+            'user_id' => Auth::user()->id
+        );
+        DB::table('log')->insert($logArr);
+        return TRUE;
     }
 
 }
